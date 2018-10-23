@@ -83,7 +83,6 @@ public class DBOperations {
                 m.msg = "Album "+name+" already exists in the database.";
                 return m;
             }
-
             stmt = MulticastServer.conn.prepareStatement("INSERT INTO ALBUM (NAME,GENRE,DESCR,ID_ARTIST) VALUES " +
                     "('" + name + "','" + genre+ "','" +descr+ "'," +
                     "(SELECT ID_ARTIST FROM ARTISTS WHERE ARTISTS.NAME='"+artist+"') );");
@@ -244,6 +243,10 @@ public class DBOperations {
     }
 
 
+
+
+
+
     public synchronized Message getAllSongs() {
         Message m = new Message();
         Statement stmt;
@@ -285,7 +288,6 @@ public class DBOperations {
         m.msg="Data updated.";
         return m;
     }
-
 
     public synchronized Message searchSongsByArtist(String name) {
         Message m = new Message();

@@ -49,16 +49,16 @@ public class Task implements Runnable {
             case "delete":
                 switch (tokens[1]) {
                     case "user":
-                        returnMessage = dbOperations.deleteUser(tokens[2], "USERS", "ID_USER");
+                        returnMessage = dbOperations.delete(tokens[2], "USERS", "USERNAME");
                         break;
                     case "artist":
-                        returnMessage = dbOperations.deleteUser(tokens[2], "ARTISTS", "ID_ARTIST");
+                        returnMessage = dbOperations.delete(tokens[2], "ARTISTS", "NAME");
                         break;
                     case "album":
-                        returnMessage = dbOperations.deleteUser(tokens[2], "ALBUM", "ID_ALBUM");
+                        returnMessage = dbOperations.delete(tokens[2], "ALBUM", "NAME");
                         break;
                     case "song":
-                        returnMessage = dbOperations.deleteUser(tokens[2], "SONGS", "ID_SONG");
+                        returnMessage = dbOperations.delete(tokens[2], "SONGS", "TITLE");
                         break;
                 }
                 break;
@@ -119,6 +119,9 @@ public class Task implements Runnable {
                         break;
                     case "user":
                         returnMessage = dbOperations.checkIfUserCanDownload(tokens[2],tokens[3]);
+                        break;
+                    case "auth":
+                        returnMessage = dbOperations.authenticateUser(tokens[2],tokens[3]);
                         break;
                 }
             }

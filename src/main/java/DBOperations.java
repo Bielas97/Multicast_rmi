@@ -4,10 +4,7 @@ import domain.Artist;
 import domain.Song;
 import domain.User;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class DBOperations {
     public DBOperations() {
@@ -23,7 +20,7 @@ public class DBOperations {
             rs = stmt2.executeQuery("SELECT COUNT(*)FROM SONGS WHERE TITLE = '" + title + "'");
             rs.next();
             if (rs.getInt(1) == 1) {
-                m.msg = "insertionsong|exists";
+                m.msg = "Song "+title+" already exists in the database.";
                 return m;
             }
 
@@ -32,10 +29,10 @@ public class DBOperations {
                     "(SELECT ID_ALBUM FROM ALBUM WHERE ALBUM.NAME='"+albumname+"'));");
             int i = stmt.executeUpdate();
             if (i > 0) {
-                m.msg = "insertionsong|ok";
+                m.msg = "Song successfully inserted.";
                 return m;
             } else {
-                m.msg = "insertionsong|bad";
+                m.msg = "Problem inserting "+title+". Server side error";
                 return m;
             }
         } catch (SQLException e) {
@@ -53,7 +50,7 @@ public class DBOperations {
             rs = stmt2.executeQuery("SELECT COUNT(*)FROM USERS WHERE USERNAME = '" + user + "'");
             rs.next();
             if (rs.getInt(1) == 1) {
-                m.msg = "insertionuser|userexists";
+                m.msg = "User "+user+" already exists in the database.";
                 return m;
             }
 
@@ -61,10 +58,10 @@ public class DBOperations {
                     "VALUES ('" + user + "','" + pass + "','" + type + "');");
             int i = stmt.executeUpdate();
             if (i > 0) {
-                m.msg = "insertionuser|ok";
+                m.msg = "User successfully inserted.";
                 return m;
             } else {
-                m.msg = "insertionuser|bad";
+                m.msg = "Problem inserting "+user+". Server side error";
                 return m;
             }
         } catch (SQLException e) {
@@ -83,7 +80,7 @@ public class DBOperations {
             rs = stmt2.executeQuery("SELECT COUNT(*)FROM ALBUM WHERE NAME = '" + name + "'");
             rs.next();
             if (rs.getInt(1) == 1) {
-                m.msg = "insertionalb| exists";
+                m.msg = "Album "+name+" already exists in the database.";
                 return m;
             }
 
@@ -92,10 +89,10 @@ public class DBOperations {
                     "(SELECT ID_ARTIST FROM ARTISTS WHERE ARTISTS.NAME='"+artist+"') );");
             int i = stmt.executeUpdate();
             if (i > 0) {
-                m.msg = "insertionalb|ok";
+                m.msg = "Album successfully inserted.";
                 return m;
             } else {
-                m.msg = "insertionalb|bad";
+                m.msg = "Problem inserting "+name+". Server side error";
                 return m;
             }
         } catch (SQLException e) {
@@ -114,7 +111,7 @@ public class DBOperations {
             rs = stmt2.executeQuery("SELECT COUNT(*)FROM ARTISTS WHERE NAME = '" + name + "'");
             rs.next();
             if (rs.getInt(1) == 1) {
-                m.msg = "insertionart|exists";
+                m.msg = "Artist "+name+" already exists in the database.";
                 return m;
             }
 
@@ -122,10 +119,10 @@ public class DBOperations {
                     "('" + name + "','" + bio+"');");
             int i = stmt.executeUpdate();
             if (i > 0) {
-                m.msg = "insertionart|ok";
+                m.msg = "Artist successfully inserted.";
                 return m;
             } else {
-                m.msg = "insertionart|bad";
+                m.msg = "Problem inserting "+name+". Server side error";
                 return m;
             }
         } catch (SQLException e) {
@@ -134,25 +131,22 @@ public class DBOperations {
         return m;
     }
 
-    public synchronized Message deleteUser(String ids, String who, String what) {
+    public synchronized Message delete(String ids, String table,String column) {
         Message m = new Message();
         PreparedStatement stmt;
-        ResultSet rs = null;
-        int id = Integer.parseInt(ids);
         try {
-
-            stmt = MulticastServer.conn.prepareStatement("DELETE FROM "+who+" WHERE "+what+" = '" + id + "';");
+            stmt = MulticastServer.conn.prepareStatement("DELETE FROM "+table+" WHERE "+column+" = '" + ids + "';");
             stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
-
-
+            m.msg = "Could not delete "+ ids;
+            return m;
         }
-        m.msg = "deletion"+who.toLowerCase()+"|ok";
+        m.msg = "Successfully deleted "+ ids;
         return m;
     }
 
-    public synchronized String authenticateUser(String user, String pass) throws SQLException {
+    public synchronized Message authenticateUser(String user, String pass)  {
+        Message m = new Message();
         Statement stmt;
         ResultSet rs = null;
 
@@ -163,41 +157,44 @@ public class DBOperations {
 
             while (rs.next()) {
                 if (rs.getInt(1) == 1) {
-                    return "authentication|ok";
+                    m.msg = "Authentication successful";
+                    return m;
                 } else {
-                    return "authentication|bad";
+                    m.msg =  "Wrong username or password";
+                    return m;
                 }
             }
             stmt.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            m.msg = "Error server side";
+            return m;
         }
+        return m;
 
-        return "authentication|bad";
     }
 
-    public Message getAllArtists() {
+    public synchronized Message getAllArtists() {
         Message m = new Message();
         Statement stmt;
         ResultSet rs = null;
         try {
             stmt = MulticastServer.conn.createStatement();
 
-        rs = stmt.executeQuery("SELECT * FROM ARTISTS");
-        while (rs.next()) {
-            int id = rs.getInt(1);
-            String name = rs.getString(2);
-            String bio = rs.getString(3);
-            m.artistList.add(new Artist(id, name, bio));
-        }
-        stmt.close();
+            rs = stmt.executeQuery("SELECT * FROM ARTISTS");
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                String bio = rs.getString(3);
+                m.artistList.add(new Artist(id, name, bio));
+            }
+            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return m;
     }
 
-    public Message getAllUsers() {
+    public synchronized Message getAllUsers() {
         Message m = new Message();
         Statement stmt;
         ResultSet rs = null;
@@ -271,7 +268,7 @@ public class DBOperations {
         return m;
     }
 
-    public synchronized Message updateRecord(String replacement, String ids, String table, String column, String repColumn) {
+    public synchronized Message updateRecord(String replacement, String ids,String table, String column,String repColumn) {
         Message m = new Message();
         PreparedStatement stmt;
         ResultSet rs = null;
@@ -282,8 +279,10 @@ public class DBOperations {
             System.out.println(stmt);
         }catch (SQLException e) {
             e.printStackTrace();
+            m.msg = "Error updating data";
+            return m;
         }
-        m.msg="update|ok";
+        m.msg="Data updated.";
         return m;
     }
 
@@ -394,16 +393,16 @@ public class DBOperations {
             rs = stmt.executeQuery("SELECT TITLE FROM SONGS WHERE NAME ='"+filename+"';");
             rs.next();
             if (rs.getInt(1) == 1) {
-                m.msg = "checkfile|ok";
-               return m;
+                m.msg = "ok";
+                return m;
             }else{
-                m.msg = "checkfile|notexists";
+                m.msg = "notexists";
                 return m;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        m.msg = "checkfile|servererror";
+        m.msg = "servererror";
         return m;
     }
 
@@ -415,19 +414,19 @@ public class DBOperations {
             stmt = MulticastServer.conn.prepareStatement("INSERT INTO USERFILES(USERNAME,TITLE) VALUES ('"+user+"','"+title+"')");
             int i = stmt.executeUpdate();
             if (i > 0) {
-                m.msg = "insertionsu|ok";
+                m.msg = "User + "+ user + "can now download song: "+ title;
                 return m;
             } else {
-                m.msg = "insertionsu|bad";
+                m.msg = "Wrong user or song title";
                 return m;
             }
         } catch (SQLException e) {
-            m.msg = "insertionsu|bad";
+            m.msg = "Error sharing music";
             return m;
         }
     }
 
-    public synchronized Message checkIfUserCanDownload(String username, String title) {
+    public synchronized Message checkIfUserCanDownload(String username,String title) {
         Message m = new Message();
         title = title.substring(0,title.length()-4);
         Statement stmt;
@@ -437,16 +436,16 @@ public class DBOperations {
             rs = stmt.executeQuery("SELECT COUNT(*) FROM USERFILES WHERE USERNAME ='"+username+"' AND TITLE = '"+title+"';");
             rs.next();
             if (rs.getInt(1) == 1) {
-                m.msg = "checkuser|ok";
+                m.msg = "ok";
                 return m;
             }else{
-                m.msg = "checkuser|notexists";
+                m.msg = "no";
                 return m;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        m.msg = "checkuser|servererror";
+        m.msg = "error";
         return m;
     }
 
@@ -461,7 +460,7 @@ public class DBOperations {
                     "and '"+song+"'=songs.title and songs.id_song = favorites.id_song and favorites.id_user = users.id_user");
             rs.next();
             if (rs.getInt(1) == 1) {
-                m.msg = "insertionfav|exists";
+                m.msg = "Song already in favorites.";
                 return m;
             }
 
@@ -470,10 +469,10 @@ public class DBOperations {
                     "(SELECT ID_SONG FROM SONGS WHERE SONGS.TITLE='"+song+"'));");
             int i = stmt.executeUpdate();
             if (i > 0) {
-                m.msg = "insertionfav|ok";
+                m.msg = "Song successfully inserted";
                 return m;
             } else {
-                m.msg = "insertionfav|bad";
+                m.msg = "Error inserting song.";
                 return m;
             }
         } catch (SQLException e) {

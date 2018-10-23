@@ -30,6 +30,7 @@ public class RmiServer extends Thread{
             System.out.println(rmo.getAllUsers());
 
 
+
         } catch (RemoteException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {

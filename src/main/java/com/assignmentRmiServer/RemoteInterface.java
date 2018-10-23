@@ -37,9 +37,9 @@ public interface RemoteInterface extends Remote {
 
     List<Artist> getAllArtists() throws RemoteException;
 
-    Album getOneAlbum(String albumName) throws RemoteException;
+    //Album getOneAlbum(String albumName) throws RemoteException;
 
-    Artist getOneArtist(String artistName) throws RemoteException;
+   // Artist getOneArtist(String artistName) throws RemoteException;
 
     String insertSong(String title, String albumname) throws RemoteException;
 
@@ -80,6 +80,8 @@ public interface RemoteInterface extends Remote {
     List<User> getAllUsers() throws RemoteException;
 
     String insertAlbum(String name, String genre, String desc, String artistName) throws RemoteException;
+
+    String insertArtist(String name, String bio) throws RemoteException;
 
     String deleteUser(String id) throws RemoteException;
 

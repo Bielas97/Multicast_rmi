@@ -163,16 +163,16 @@ public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteIn
        return remoteOperations.getAllArtists();
     }
 
-    @Override
+   /* @Override
     public Album getOneAlbum(String albumName) throws RemoteException {
         return new Album(1, "name", "gente", "das", 3);
 
-    }
+    }*/
 
-    @Override
+    /*@Override
     public Artist getOneArtist(String artistName) throws RemoteException {
         return new Artist(1, "name1", "bio");
-    }
+    }*/
 
     @Override
     public String insertSong(String title, String albumname) throws RemoteException {
@@ -211,55 +211,23 @@ public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteIn
 
     @Override
     public List<Song> searchSongsByGenre(final String genre) throws RemoteException {
-        List<Album> albumsWithGenre = albums.stream().filter(album -> album.getGenre().equals(genre)).collect(Collectors.toList());
-        List<Song> result = new ArrayList<>();
-
-        /*songs.forEach(song -> {
-            for (Album al : albumsWithGenre){
-                if(song.getAlbumId().equals(al.getId())){
-                    result.add(song);
-                }
-            }
-        });*/
-
-        return result;
+        return remoteOperations.searchSongByGenre(genre);
     }
 
     @Override
     public List<Song> searchSongsByArtist(String name) throws RemoteException {
-        List<Artist> artistsWithGivenName = artists.stream().filter(artist -> artist.getName().equals(name)).collect(Collectors.toList());
-        List<Song> result = new ArrayList<>();
-
-       /* songs.forEach(song -> {
-            for (Artist ar : artistsWithGivenName){
-                if(song.getArtistId().equals(ar.getId())){
-                    result.add(song);
-                }
-            }
-        });*/
-
-        return result;
+        return remoteOperations.searchSongByArtist(name);
     }
 
     @Override
     public List<Song> searchSongsByAlbum(String name) throws RemoteException {
-        List<Album> albumsWithName = albums.stream().filter(album -> album.getName().equals(name)).collect(Collectors.toList());
-        List<Song> result = new ArrayList<>();
-
-        /*songs.forEach(song -> {
-            for (Album al : albumsWithName){
-                if(song.getAlbumId().equals(al.getId())){
-                    result.add(song);
-                }
-            }
-        });*/
-
-        return result;
+        return remoteOperations.searchSongByAlbum(name);
     }
 
     @Override
     public void writeDescriptonToAlbum(String nameOfAlbum, String newDesc) throws RemoteException {
-        Album album = getOneAlbum(nameOfAlbum);
+        //Album album = getOneAlbum(nameOfAlbum);
+        Album album = new Album(1, "da", "ds", "da", 2);
         albums.remove(album);
         /* album.setDescription(newDesc);*/
         albums.add(album);
@@ -280,6 +248,11 @@ public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteIn
     @Override
     public String insertAlbum(String name, String genre, String desc, String artistName) throws RemoteException {
         return remoteOperations.insertAlbum(name, genre, desc, artistName);
+    }
+
+    @Override
+    public String insertArtist(String name, String bio) throws RemoteException {
+        return remoteOperations.insertArtist(name, bio);
     }
 
     @Override

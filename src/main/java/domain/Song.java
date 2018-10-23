@@ -3,6 +3,8 @@ package domain;
 import java.io.Serializable;
 
 public class Song implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private int id;
     private int id_album;
     private String title;

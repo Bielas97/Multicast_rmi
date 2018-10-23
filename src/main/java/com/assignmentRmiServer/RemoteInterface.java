@@ -17,7 +17,7 @@ public interface RemoteInterface extends Remote{
 
     //real
     String register(String username, String password, String role) throws RemoteException;
-    boolean isLoginOk(String username, String password) throws RemoteException;
+    //boolean isLoginOk(String username, String password) throws RemoteException;
     void login(String username, String password) throws RemoteException;
     Role whoIsLoggedIn(String username) throws RemoteException;
     void logout() throws RemoteException;
@@ -72,4 +72,6 @@ public interface RemoteInterface extends Remote{
     void writeDescriptonToAlbum(String nameOfAlbum, String newDesc) throws RemoteException;
 
     void changeRoleOfAUser(String username, Role role) throws RemoteException;
+
+    List<User> getAllUsers() throws RemoteException;
 }

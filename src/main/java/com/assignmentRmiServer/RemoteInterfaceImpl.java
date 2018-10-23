@@ -61,13 +61,13 @@ public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteIn
         return remoteOperations.insertUser(username, password, role);
     }
 
-    @Override
+    /*@Override
     public boolean isLoginOk(String username, String password) {
         //check in DB if there is this USER
-       /* if(ok){
+       *//* if(ok){
             return true;
         }
-        else return false;*/
+        else return false;*//*
         System.out.println("attempt to login...");
         System.out.println("checking for user with username '" + username + "'...");
         if (users.isEmpty()) {
@@ -91,7 +91,7 @@ public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteIn
 
 
         return result;
-    }
+    }*/
 
 
     @Override
@@ -123,8 +123,8 @@ public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteIn
     @Override
     public Song getOneSong(String songName) throws RemoteException {
         Song s = null;
-        for (Song song : songs){
-            if(song.getTitle().equals(songName)){
+        for (Song song : songs) {
+            if (song.getTitle().equals(songName)) {
                 s = song;
             }
         }
@@ -134,7 +134,7 @@ public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteIn
     @Override
     public User findByUsername(String username) throws RemoteException {
         System.out.println("*****************************************");
-        return new User(2,username, "pass", "czesc");
+        return new User(2, username, "pass", "czesc");
     }
 
     @Override
@@ -265,7 +265,7 @@ public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteIn
     public void writeDescriptonToAlbum(String nameOfAlbum, String newDesc) throws RemoteException {
         Album album = getOneAlbum(nameOfAlbum);
         albums.remove(album);
-       /* album.setDescription(newDesc);*/
+        /* album.setDescription(newDesc);*/
         albums.add(album);
     }
 
@@ -273,6 +273,12 @@ public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteIn
     public void changeRoleOfAUser(String username, Role role) throws RemoteException {
         /*List<User> userList = users.stream().filter(u -> u.getUsername().equals(username)).collect(Collectors.toList());
         userList.forEach(us -> us.setRole(role));*/
+    }
+
+    @Override
+    public List<User> getAllUsers() throws RemoteException {
+        System.out.println("proba wywolania getAllUsers");
+        return remoteOperations.getAllUsers();
     }
 
 }

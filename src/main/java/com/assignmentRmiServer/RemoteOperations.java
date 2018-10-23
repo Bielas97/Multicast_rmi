@@ -137,4 +137,7 @@ public class RemoteOperations {
         Message m = mc.SendReceive("insert|fav|" + user + "|" + song);
         return m.msg;
     }
+
+    //todo metoda autheticateUser
+
 }

@@ -1,12 +1,16 @@
 package domain;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class User implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private int id;
     private String username;
     private String password;
     private String type;
+
 
     public User(int id, String username, String password, String type) {
         this.id = id;
@@ -55,5 +59,22 @@ public class User implements Serializable {
                 ", password='" + password + '\'' +
                 ", type='" + type + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id &&
+                Objects.equals(username, user.username) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(type, user.type);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, username, password, type);
     }
 }

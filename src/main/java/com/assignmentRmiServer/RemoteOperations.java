@@ -35,23 +35,23 @@ public class RemoteOperations {
         return m.msg;
     }
 
-    public String deleteUser(String user) {
-        Message m = mc.SendReceive("delete|user|" + user);
+    public String deleteUser(String id) {
+        Message m = mc.SendReceive("delete|user|" + id);
         return m.msg;
     }
 
-    public String deleteArtist(String artist) {
-        Message m = mc.SendReceive("delete|artist|" + artist);
+    public String deleteArtist(String id) {
+        Message m = mc.SendReceive("delete|artist|" + id);
         return m.msg;
     }
 
-    public String deleteAlbum(String album) {
-        Message m = mc.SendReceive("delete|album|" + album);
+    public String deleteAlbum(String id) {
+        Message m = mc.SendReceive("delete|album|" + id);
         return m.msg;
     }
 
-    public String deleteSong(String song) {
-        Message m = mc.SendReceive("delete|song|" + song);
+    public String deleteSong(String id) {
+        Message m = mc.SendReceive("delete|song|" + id);
         return m.msg;
     }
 
@@ -137,8 +137,7 @@ public class RemoteOperations {
         Message m = mc.SendReceive("insert|fav|" + user + "|" + song);
         return m.msg;
     }
-    public String authenicateUser(String user,String pass){
-        Message m = mc.SendReceive("check|auth|" + user + "|" + pass);
-        return m.msg;
-    }
+
+    //todo metoda autheticateUser
+
 }

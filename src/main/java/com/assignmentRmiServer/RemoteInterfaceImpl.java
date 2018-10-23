@@ -61,13 +61,13 @@ public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteIn
         return remoteOperations.insertUser(username, password, role);
     }
 
-    @Override
+    /*@Override
     public boolean isLoginOk(String username, String password) {
         //check in DB if there is this USER
-       /* if(ok){
+       *//* if(ok){
             return true;
         }
-        else return false;*/
+        else return false;*//*
         System.out.println("attempt to login...");
         System.out.println("checking for user with username '" + username + "'...");
         if (users.isEmpty()) {
@@ -91,7 +91,7 @@ public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteIn
 
 
         return result;
-    }
+    }*/
 
 
     @Override
@@ -121,52 +121,52 @@ public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteIn
     }
 
     @Override
-    public Song getOneSong(String songName) throws RemoteException {
-        Song s = null;
-        for (Song song : songs){
-            if(song.getTitle().equals(songName)){
-                s = song;
-            }
-        }
-        return s;
+    public List<Song> searchSongByName(String songName) throws RemoteException {
+        return remoteOperations.searchSongByName(songName);
     }
+
+    @Override
+    public List<Song> searchSongByArtist(String name){
+        return remoteOperations.searchSongByArtist(name);
+    }
+
+    @Override
+    public List<Song> searchSongByAlbum(String name){
+        return remoteOperations.searchSongByAlbum(name);
+    }
+
+    @Override
+    public List<Song> searchSongByGenre(String name){
+        return remoteOperations.searchSongByGenre(name);
+    }
+
+
 
     @Override
     public User findByUsername(String username) throws RemoteException {
         System.out.println("*****************************************");
-        return new User(2,username, "pass", "czesc");
+        return new User(2, username, "pass", "czesc");
     }
 
     @Override
     public List<Song> getAllSongs() throws RemoteException {
-        /*Song s1 = new Song(1L, "title1", 2L, 3L);
-        Song s2 = new Song(2L, "title2", 3L, 4L);
-        songs.add(s1);
-        songs.add(s2);*/
-        return songs;
+        return remoteOperations.getAllSongs();
     }
 
     @Override
     public List<Album> getAllAlbums() throws RemoteException {
-        /*Album a1 = new Album(1L, "name1", "genre1", 2l, "desc");
-        Album a2 = new Album(2L, "name2", "genre2", 3l, "desc");
-        albums.add(a1);
-        albums.add(a2);*/
-        return albums;
+        return remoteOperations.getAllAlbums();
     }
 
     @Override
     public List<Artist> getAllArtists() throws RemoteException {
-       /* Artist a1 = new Artist(1L, "name1");
-        Artist a2 = new Artist(2L, "name2");
-        artists.add(a1);
-        artists.add(a2);*/
-        return artists;
+       return remoteOperations.getAllArtists();
     }
 
     @Override
     public Album getOneAlbum(String albumName) throws RemoteException {
         return new Album(1, "name", "gente", "das", 3);
+
     }
 
     @Override
@@ -175,42 +175,38 @@ public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteIn
     }
 
     @Override
-    public void insertSong(Song song) throws RemoteException {
-        songs.add(song);
+    public String insertSong(String title, String albumname) throws RemoteException {
+        return remoteOperations.insertSong(title, albumname);
     }
 
     @Override
-    public void updateSong(Song song) throws RemoteException {
-        deleteSong(song.getTitle());
-        songs.add(song);
+    public String updateSong(String newTitle, String oldTitle) throws RemoteException {
+        return remoteOperations.updateSong(newTitle, oldTitle);
     }
 
     @Override
-    public void deleteSong(String name) throws RemoteException {
-        Song song = getOneSong(name);
-        songs.remove(song);
+    public String deleteSong(String id) throws RemoteException {
+        return remoteOperations.deleteSong(id);
     }
 
     @Override
-    public void deleteArtist(String name) throws RemoteException {
-        artists.remove(getOneArtist(name));
+    public String deleteArtist(String id) throws RemoteException {
+        return remoteOperations.deleteArtist(id);
     }
 
     @Override
-    public void deleteAlbum(String name) throws RemoteException {
-        albums.remove(getOneAlbum(name));
+    public String deleteAlbum(String id) throws RemoteException {
+        return remoteOperations.deleteAlbum(id);
     }
 
     @Override
-    public void updateAlbum(Album album) throws RemoteException {
-        deleteAlbum(album.getName());
-        albums.add(album);
+    public String updateAlbum(String newName, String oldName) throws RemoteException {
+        return remoteOperations.updateAlbum(newName, oldName);
     }
 
     @Override
-    public void updateArtist(Artist artist) throws RemoteException {
-        deleteArtist(artist.getName());
-        artists.add(artist);
+    public String updateArtist(String newName, String oldName) throws RemoteException {
+        return remoteOperations.updateArtist(newName, oldName);
     }
 
     @Override
@@ -265,7 +261,7 @@ public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteIn
     public void writeDescriptonToAlbum(String nameOfAlbum, String newDesc) throws RemoteException {
         Album album = getOneAlbum(nameOfAlbum);
         albums.remove(album);
-       /* album.setDescription(newDesc);*/
+        /* album.setDescription(newDesc);*/
         albums.add(album);
     }
 
@@ -273,6 +269,22 @@ public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteIn
     public void changeRoleOfAUser(String username, Role role) throws RemoteException {
         /*List<User> userList = users.stream().filter(u -> u.getUsername().equals(username)).collect(Collectors.toList());
         userList.forEach(us -> us.setRole(role));*/
+    }
+
+    @Override
+    public List<User> getAllUsers() throws RemoteException {
+        System.out.println("proba wywolania getAllUsers");
+        return remoteOperations.getAllUsers();
+    }
+
+    @Override
+    public String insertAlbum(String name, String genre, String desc, String artistName) throws RemoteException {
+        return remoteOperations.insertAlbum(name, genre, desc, artistName);
+    }
+
+    @Override
+    public String deleteUser(String id) throws RemoteException {
+        return remoteOperations.deleteUser(id);
     }
 
 }

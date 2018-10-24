@@ -482,4 +482,29 @@ public class DBOperations {
         }
         return m;
     }
+
+    public synchronized Message searchUsersByName(String name) {
+
+            Message m = new Message();
+            Statement stmt;
+            ResultSet rs = null;
+            try {
+                stmt = MulticastServer.conn.createStatement();
+                rs = stmt.executeQuery("SELECT ID_USER,USERNAME,PASSWORD,TYPE " +
+                        "FROM USERS " +
+                        "WHERE USERNAME LIKE ('%"+name+"%')");
+                while (rs.next()) {
+                    int id = rs.getInt(1);
+                    String  username = rs.getString(2);
+                    String password = rs.getString(3);
+                    String type = rs.getString(4);
+                    m.userList.add(new User(id,username,password,type));
+                }
+                stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return m;
+
+    }
 }

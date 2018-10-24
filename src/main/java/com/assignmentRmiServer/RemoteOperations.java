@@ -145,5 +145,8 @@ public class RemoteOperations {
         Message m = mc.SendReceive("search|byuser|" + name);
         return m.userList;
     }
-
+    public String updateArtistBio(String newbio,String name){
+        Message m = mc.SendReceive("update|bio|" + newbio+"|"+name);
+        return m.msg;
+    }
 }

@@ -95,6 +95,9 @@ public class Task implements Runnable {
                     case "role":
                         returnMessage = dbOperations.updateRecord(tokens[2], tokens[3],"USERS","USERNAME","TYPE");
                         break;
+                    case "bio":
+                        returnMessage = dbOperations.updateRecord(tokens[2], tokens[3],"ARTISTS","NAME","BIO");
+                        break;
                 }
                 break;
             case "search":

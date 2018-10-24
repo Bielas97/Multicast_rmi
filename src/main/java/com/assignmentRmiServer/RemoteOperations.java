@@ -141,5 +141,9 @@ public class RemoteOperations {
         Message m = mc.SendReceive("check|auth|" + user + "|" + pass);
         return m.msg;
     }
+    public List<User> searchUser(String name){
+        Message m = mc.SendReceive("search|byuser|" + name);
+        return m.userList;
+    }
 
 }

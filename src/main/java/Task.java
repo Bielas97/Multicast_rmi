@@ -111,6 +111,9 @@ public class Task implements Runnable {
                     case "byname":
                         returnMessage = dbOperations.searchSongsByName(tokens[2]);
                         break;
+                    case "byuser":
+                        returnMessage = dbOperations.searchUsersByName(tokens[2]);
+                        break;
                 }
             case "check": {
                 switch (tokens[1]) {

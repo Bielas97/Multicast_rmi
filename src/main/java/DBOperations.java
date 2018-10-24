@@ -83,7 +83,6 @@ public class DBOperations {
                 m.msg = "Album "+name+" already exists in the database.";
                 return m;
             }
-
             stmt = MulticastServer.conn.prepareStatement("INSERT INTO ALBUM (NAME,GENRE,DESCR,ID_ARTIST) VALUES " +
                     "('" + name + "','" + genre+ "','" +descr+ "'," +
                     "(SELECT ID_ARTIST FROM ARTISTS WHERE ARTISTS.NAME='"+artist+"') );");
@@ -244,6 +243,10 @@ public class DBOperations {
     }
 
 
+
+
+
+
     public synchronized Message getAllSongs() {
         Message m = new Message();
         Statement stmt;
@@ -285,7 +288,6 @@ public class DBOperations {
         m.msg="Data updated.";
         return m;
     }
-
 
     public synchronized Message searchSongsByArtist(String name) {
         Message m = new Message();
@@ -479,5 +481,30 @@ public class DBOperations {
             e.printStackTrace();
         }
         return m;
+    }
+
+    public synchronized Message searchUsersByName(String name) {
+
+            Message m = new Message();
+            Statement stmt;
+            ResultSet rs = null;
+            try {
+                stmt = MulticastServer.conn.createStatement();
+                rs = stmt.executeQuery("SELECT ID_USER,USERNAME,PASSWORD,TYPE " +
+                        "FROM USERS " +
+                        "WHERE USERNAME LIKE ('%"+name+"%')");
+                while (rs.next()) {
+                    int id = rs.getInt(1);
+                    String  username = rs.getString(2);
+                    String password = rs.getString(3);
+                    String type = rs.getString(4);
+                    m.userList.add(new User(id,username,password,type));
+                }
+                stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return m;
+
     }
 }

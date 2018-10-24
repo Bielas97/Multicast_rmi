@@ -274,9 +274,18 @@ public class DBOperations {
     public synchronized Message updateRecord(String replacement, String ids,String table, String column,String repColumn) {
         Message m = new Message();
         PreparedStatement stmt;
+        Statement stmt2;
         ResultSet rs = null;
 
         try {
+            stmt2 = MulticastServer.conn.createStatement();
+            rs = stmt2.executeQuery("SELECT COUNT(*) FROM "+table+" WHERE "+column+" ='" + ids + "';");
+            System.out.println(stmt2);
+            rs.next();
+            if (rs.getInt(1) == 0) {
+                m.msg = "No record with given data found.";
+                return m;
+            }
             stmt = MulticastServer.conn.prepareStatement("update "+table+" set "+repColumn+" = '"+replacement+"' where "+column+" = '"+ids+"';");
             stmt.executeUpdate();
             System.out.println(stmt);
@@ -507,4 +516,6 @@ public class DBOperations {
             return m;
 
     }
+
+
 }

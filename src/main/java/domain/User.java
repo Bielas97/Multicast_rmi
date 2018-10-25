@@ -53,7 +53,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "com.assignmentRmiServer.MulticastClient.domain.User{" +
+        return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +

@@ -129,24 +129,29 @@ public class RemoteOperations {
         Message m = mc.SendReceive("update|descalbum|" + desc + "|" + album);
         return m.msg;
     }
-    public String changeRoleOfAUser(String user,String role){
+
+    public String changeRoleOfAUser(String user, String role) {
         Message m = mc.SendReceive("update|role|" + role + "|" + user);
         return m.msg;
     }
-    public String insertFavoriteSong(String user,String song){
+
+    public String insertFavoriteSong(String user, String song) {
         Message m = mc.SendReceive("insert|fav|" + user + "|" + song);
         return m.msg;
     }
-    public String authenicateUser(String user,String pass){
+
+    public String authenicateUser(String user, String pass) {
         Message m = mc.SendReceive("check|auth|" + user + "|" + pass);
         return m.msg;
     }
-    public List<User> searchUser(String name){
+
+    public List<User> searchUser(String name) {
         Message m = mc.SendReceive("search|byuser|" + name);
         return m.userList;
     }
-    public String updateArtistBio(String newbio,String name){
-        Message m = mc.SendReceive("update|bio|" + newbio+"|"+name);
+
+    public String updateArtistBio(String newbio, String name) {
+        Message m = mc.SendReceive("update|bio|" + newbio + "|" + name);
         return m.msg;
     }
 }

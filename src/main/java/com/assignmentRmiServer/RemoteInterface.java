@@ -39,7 +39,7 @@ public interface RemoteInterface extends Remote {
 
     //Album getOneAlbum(String albumName) throws RemoteException;
 
-   // Artist getOneArtist(String artistName) throws RemoteException;
+    // Artist getOneArtist(String artistName) throws RemoteException;
 
     String insertSong(String title, String albumname) throws RemoteException;
 
@@ -73,7 +73,7 @@ public interface RemoteInterface extends Remote {
 
     List<Song> searchSongsByAlbum(String name) throws RemoteException;
 
-    void writeDescriptonToAlbum(String nameOfAlbum, String newDesc) throws RemoteException;
+    String writeDescriptonToAlbum(String nameOfAlbum, String newDesc) throws RemoteException;
 
     public String changeRoleOfAUser(String username, String role) throws RemoteException;
 
@@ -100,4 +100,8 @@ public interface RemoteInterface extends Remote {
     String updateArtist(String newName, String oldName) throws RemoteException;
 
     String promoteUser(String username, String role) throws RemoteException;
+
+    List<Song> getSharedSongs(String username) throws RemoteException;
+
+    List<Song> getFavouriteSongs(String username) throws RemoteException;
 }

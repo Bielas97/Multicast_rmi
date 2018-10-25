@@ -209,6 +209,16 @@ public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteIn
     }
 
     @Override
+    public List<Song> getSharedSongs(String username) throws RemoteException {
+        return remoteOperations.getSharedSongs(String username);
+    }
+
+    @Override
+    public List<Song> getFavouriteSongs(String username) throws RemoteException {
+        return remoteOperations.getFavouriteSongs(username);
+    }
+
+    @Override
     public List<Song> searchSongsByGenre(final String genre) throws RemoteException {
         return remoteOperations.searchSongByGenre(genre);
     }
@@ -224,12 +234,8 @@ public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteIn
     }
 
     @Override
-    public void writeDescriptonToAlbum(String nameOfAlbum, String newDesc) throws RemoteException {
-        //Album album = getOneAlbum(nameOfAlbum);
-        Album album = new Album(1, "da", "ds", "da", 2);
-        albums.remove(album);
-        /* album.setDescription(newDesc);*/
-        albums.add(album);
+    public String writeDescriptonToAlbum(String nameOfAlbum, String newDesc) throws RemoteException {
+        return remoteOperations.writeDescriptionToAlbum(nameOfAlbum, newDesc);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package domain;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Album implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -68,5 +69,23 @@ public class Album implements Serializable {
                 ", descr='" + descr + '\'' +
                 ", id_artist=" + id_artist +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Album album = (Album) o;
+        return id == album.id &&
+                id_artist == album.id_artist &&
+                Objects.equals(name, album.name) &&
+                Objects.equals(genre, album.genre) &&
+                Objects.equals(descr, album.descr);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name, genre, descr, id_artist);
     }
 }

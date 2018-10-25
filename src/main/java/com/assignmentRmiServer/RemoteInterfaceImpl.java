@@ -13,10 +13,9 @@ import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
- * To ma byc tez klientem UDP
+ * implemantation of java remote interface
  */
 public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteInterface {
     private static final long serialVersionUID = 1L;

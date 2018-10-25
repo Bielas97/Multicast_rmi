@@ -18,7 +18,7 @@ public class Artist implements Serializable {
 
     @Override
     public String toString() {
-        return "domain.Artist{" +
+        return "Artist{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", bio='" + bio + '\'' +

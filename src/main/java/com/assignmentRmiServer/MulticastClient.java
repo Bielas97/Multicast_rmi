@@ -80,7 +80,7 @@ public class MulticastClient extends Thread {
         }
     }
 
-    public Message SendReceive(String msg) {
+    public Message sendReceive(String msg) {
 
             MulticastSocket socket = null;
             try {

@@ -219,6 +219,31 @@ public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteIn
     }
 
     @Override
+    public String checkIfFileCorresponds(String filename) throws RemoteException {
+        return remoteOperations.checkIfFileCorresponds(filename);
+    }
+
+    @Override
+    public String checkIfUserCanDownload(String username, String title) throws RemoteException {
+        return remoteOperations.checkIfUserCanDownload(username, title);
+    }
+
+    @Override
+    public String shareSong(String user, String filename) throws RemoteException {
+        return remoteOperations.shareSong(user, filename);
+    }
+
+    @Override
+    public String insertFavoriteSong(String user, String song) throws RemoteException {
+        return remoteOperations.insertFavoriteSong(user, song);
+    }
+
+    @Override
+    public String updateArtistBio(String newbio, String name) throws RemoteException {
+        return remoteOperations.updateArtistBio(newbio, name);
+    }
+
+    @Override
     public List<Song> searchSongsByGenre(final String genre) throws RemoteException {
         return remoteOperations.searchSongByGenre(genre);
     }

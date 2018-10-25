@@ -11,7 +11,7 @@ public class SendReceiveConnection {
     private static String MULTICAST_ADDRESS = "224.3.3.1";
     private static final int PORT = 4320;
 
-    public Message SendReceive(String msg) {
+    public Message sendReceive(String msg) {
 
         MulticastSocket socket = null;
         try {

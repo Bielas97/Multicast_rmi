@@ -104,4 +104,14 @@ public interface RemoteInterface extends Remote {
     List<Song> getSharedSongs(String username) throws RemoteException;
 
     List<Song> getFavouriteSongs(String username) throws RemoteException;
+
+    String checkIfFileCorresponds(String filename) throws RemoteException;
+
+    String checkIfUserCanDownload(String username, String title) throws RemoteException;
+
+    String shareSong(String user, String filename) throws RemoteException;
+
+    String insertFavoriteSong(String user, String song) throws RemoteException;
+
+    String updateArtistBio(String newbio, String name) throws RemoteException;
 }

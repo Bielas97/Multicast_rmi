@@ -95,13 +95,8 @@ public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteIn
 
 
     @Override
-    public void login(String username, String password) {
-        //send the credentials to multicast server
-        String credentials = username + " | " + password;
-        //logic
-
-        //test
-        System.out.println("successful logged in with crentials: " + credentials);
+    public String login(String username, String password) {
+        return remoteOperations.authenicateUser(username, password);
     }
 
     @Override
@@ -143,9 +138,8 @@ public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteIn
 
 
     @Override
-    public User findByUsername(String username) throws RemoteException {
-        System.out.println("*****************************************");
-        return new User(2, username, "pass", "czesc");
+    public List<User> findByUsername(String username) throws RemoteException {
+        return remoteOperations.searchUser(username);
     }
 
     @Override
@@ -210,6 +204,11 @@ public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteIn
     }
 
     @Override
+    public String promoteUser(String username, String role) throws RemoteException {
+        return remoteOperations.changeRoleOfAUser(username, role);
+    }
+
+    @Override
     public List<Song> searchSongsByGenre(final String genre) throws RemoteException {
         return remoteOperations.searchSongByGenre(genre);
     }
@@ -234,9 +233,8 @@ public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteIn
     }
 
     @Override
-    public void changeRoleOfAUser(String username, Role role) throws RemoteException {
-        /*List<User> userList = users.stream().filter(u -> u.getUsername().equals(username)).collect(Collectors.toList());
-        userList.forEach(us -> us.setRole(role));*/
+    public String changeRoleOfAUser(String username, String role) throws RemoteException {
+        return remoteOperations.changeRoleOfAUser(username, role);
     }
 
     @Override

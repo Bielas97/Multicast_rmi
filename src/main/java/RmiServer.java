@@ -14,11 +14,18 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.Scanner;
 
-public class RmiServer extends Thread{
-    private static String MULTICAST_ADDRESS = "224.3.3.1";
-    private static final int PORT = 4320;
+public class RmiServer /*extends Thread*/{
+    /*private static String MULTICAST_ADDRESS = "224.3.3.1";
+    private static final int PORT = 4320;*/
+    private String multiCastAddress;
+    private int port;
 
-    public static void main(String[] args) {
+    public RmiServer(String multiCastAddress, int port) {
+        this.multiCastAddress = multiCastAddress;
+        this.port = port;
+    }
+
+    public void startServer(){
         try {
             LocateRegistry.createRegistry(7000);
             RemoteInterfaceImpl server = new RemoteInterfaceImpl(0);
@@ -30,49 +37,54 @@ public class RmiServer extends Thread{
             System.out.println(rmo.getAllUsers());
 
 
+            Scanner scanner = new Scanner(System.in);
+            while (true) {
+                MulticastSocket socket = null;
+                try {
+
+                    socket = new MulticastSocket(port + 1);  // create socket and bind it
+                    InetAddress group = InetAddress.getByName(multiCastAddress);
+                    socket.joinGroup(group);
+                    byte[] buffer = new byte[256];
+                    String message = scanner.nextLine();
+                    buffer = message.getBytes();
+                    DatagramPacket packet = new DatagramPacket(buffer, buffer.length, group, port);
+                    socket.send(packet);
+                    byte[] incomingData = new byte[1024];
+
+
+                    DatagramPacket incomingPacket = new DatagramPacket(incomingData, incomingData.length, group, port + 1);
+                    socket.receive(incomingPacket);
+                    byte[] data = incomingPacket.getData();
+                    ByteArrayInputStream in = new ByteArrayInputStream(data);
+                    ObjectInputStream is = new ObjectInputStream(in);
+                    try {
+                        Object o = (Object) is.readObject();
+
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                } catch (IOException e) {
+                    System.out.println("server not responding... try again");
+                } finally {
+                    socket.close();
+                }
+            }
+
 
         } catch (RemoteException e) {
-            e.printStackTrace();
+            System.out.println("check if server is Alive...");
+            try {
+                Thread.sleep(5000);
+                startServer();
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
+
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
     }
 
-    @Override
-    public void run() {
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            MulticastSocket socket = null;
-            try {
-
-                socket = new MulticastSocket(PORT + 1);  // create socket and bind it
-                InetAddress group = InetAddress.getByName(MULTICAST_ADDRESS);
-                socket.joinGroup(group);
-                byte[] buffer = new byte[256];
-                String message = scanner.nextLine();
-                buffer = message.getBytes();
-                DatagramPacket packet = new DatagramPacket(buffer, buffer.length, group, PORT);
-                socket.send(packet);
-                byte[] incomingData = new byte[1024];
-
-
-                DatagramPacket incomingPacket = new DatagramPacket(incomingData, incomingData.length, group, PORT + 1);
-                socket.receive(incomingPacket);
-                byte[] data = incomingPacket.getData();
-                ByteArrayInputStream in = new ByteArrayInputStream(data);
-                ObjectInputStream is = new ObjectInputStream(in);
-                try {
-                    Object o = (Object) is.readObject();
-
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-
-            } catch (IOException e) {
-                System.out.println("server not responding... try again");
-            } finally {
-                socket.close();
-            }
-        }
-    }
 }

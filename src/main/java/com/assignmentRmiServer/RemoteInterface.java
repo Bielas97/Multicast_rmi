@@ -20,7 +20,7 @@ public interface RemoteInterface extends Remote {
     String register(String username, String password, String role) throws RemoteException;
 
     //boolean isLoginOk(String username, String password) throws RemoteException;
-    void login(String username, String password) throws RemoteException;
+    String login(String username, String password) throws RemoteException;
 
     Role whoIsLoggedIn(String username) throws RemoteException;
 
@@ -29,7 +29,7 @@ public interface RemoteInterface extends Remote {
 
 //    Song getOneSong(String songName) throws RemoteException;
 
-    User findByUsername(String username) throws RemoteException;
+    List<User> findByUsername(String username) throws RemoteException;
 
     List<Song> getAllSongs() throws RemoteException;
 
@@ -75,7 +75,7 @@ public interface RemoteInterface extends Remote {
 
     void writeDescriptonToAlbum(String nameOfAlbum, String newDesc) throws RemoteException;
 
-    void changeRoleOfAUser(String username, Role role) throws RemoteException;
+    public String changeRoleOfAUser(String username, String role) throws RemoteException;
 
     List<User> getAllUsers() throws RemoteException;
 
@@ -98,4 +98,6 @@ public interface RemoteInterface extends Remote {
     String updateAlbum(String newName, String oldName) throws RemoteException;
 
     String updateArtist(String newName, String oldName) throws RemoteException;
+
+    String promoteUser(String username, String role) throws RemoteException;
 }

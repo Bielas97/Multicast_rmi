@@ -14,6 +14,9 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.Scanner;
 
+/**
+ * creates Rmi server
+ */
 public class RmiServer /*extends Thread*/{
     /*private static String MULTICAST_ADDRESS = "224.3.3.1";
     private static final int PORT = 4320;*/

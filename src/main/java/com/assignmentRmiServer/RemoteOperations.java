@@ -154,4 +154,12 @@ public class RemoteOperations {
         Message m = mc.sendReceive("update|bio|" + newbio + "|" + name);
         return m.msg;
     }
+    public List<Song> getSharedSongs(String username){
+        Message m = mc.sendReceive("getall|shared|"+ username);
+        return m.songList;
+    }
+    public List<Song> getFavouriteSongs(String username)  {
+        Message m = mc.sendReceive("getall|fav|" + username);
+        return m.songList;
+    }
 }

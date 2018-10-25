@@ -210,7 +210,7 @@ public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteIn
 
     @Override
     public List<Song> getSharedSongs(String username) throws RemoteException {
-        return remoteOperations.getSharedSongs(String username);
+        return remoteOperations.getSharedSongs(username);
     }
 
     @Override

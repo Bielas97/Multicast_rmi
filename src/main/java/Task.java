@@ -76,6 +76,12 @@ public class Task implements Runnable {
                     case "songs":
                         returnMessage = dbOperations.getAllSongs();
                         break;
+                    case "shared":
+                        returnMessage = dbOperations.getAllSharedSongs(tokens[2]);
+                        break;
+                    case "fav":
+                        returnMessage = dbOperations.getAllFavSongs(tokens[2]);
+                        break;
                 }
                 break;
             case "update":

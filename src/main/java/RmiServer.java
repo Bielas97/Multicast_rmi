@@ -26,8 +26,9 @@ public class RmiServer extends Thread{
             System.out.println("Server ready to use...");
 
             RemoteOperations rmo = new RemoteOperations(new SendReceiveConnection());
-            System.out.println(rmo.getAllAlbums().get(0).getDescr());
-            System.out.println(rmo.getAllUsers());
+           // System.out.println(rmo.getAllAlbums().get(0).getDescr());
+            //System.out.println(rmo.getAllUsers());
+            System.out.println(rmo.updateSong("Big in Japan","Big in Chia"));
 
 
         } catch (RemoteException e) {

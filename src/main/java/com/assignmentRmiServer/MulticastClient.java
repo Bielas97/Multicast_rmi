@@ -31,7 +31,7 @@ public class MulticastClient extends Thread {
 
         System.out.println(rmo.getAllAlbums().get(0).getDescr());
         //System.out.println(rmo.insertFavoriteSong("blancior","Medium in Japan"));
-        //TCPConnectionHandlerClient tcphandle = new TCPConnectionHandlerClient();
+        //com.assignmentRmiServer.TCPConnectionHandlerClient tcphandle = new com.assignmentRmiServer.TCPConnectionHandlerClient();
 
          //   tcphandle.sendFile("Scenariusz.mp3");
 

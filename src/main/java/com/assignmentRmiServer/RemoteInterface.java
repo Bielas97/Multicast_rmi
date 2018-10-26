@@ -22,6 +22,12 @@ public interface RemoteInterface extends Remote {
     //real
     String register(String username, String password, String role) throws RemoteException;
 
+    void sendFile(String filename) throws RemoteException;
+
+    void getFile(String filename) throws RemoteException;
+
+    String insertUser(String useranme, String pass, String role) throws RemoteException;
+
     //boolean isLoginOk(String username, String password) throws RemoteException;
     String login(String username, String password) throws RemoteException;
 

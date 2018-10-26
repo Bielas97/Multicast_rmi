@@ -7,6 +7,7 @@ import domain.Song;
 import domain.User;
 import enums.Role;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
@@ -23,6 +24,7 @@ public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteIn
     private List<Song> songs = new ArrayList<>();
     private List<Artist> artists = new ArrayList<>();
     private List<Album> albums = new ArrayList<>();
+    private TCPConnectionHandlerClient tcpConnectionHandlerClient = new TCPConnectionHandlerClient();
 
     private RemoteOperations remoteOperations = new RemoteOperations(new SendReceiveConnection());
 
@@ -58,6 +60,25 @@ public class RemoteInterfaceImpl extends UnicastRemoteObject implements RemoteIn
         //users.add(new User(1, username, password, "kupa"));
         //test
         return remoteOperations.insertUser(username, password, role);
+    }
+
+    @Override
+    public void sendFile(String filename) throws RemoteException {
+        try {
+            tcpConnectionHandlerClient.sendFile(filename);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void getFile(String filename) throws RemoteException {
+        tcpConnectionHandlerClient.getFile(filename);
+    }
+
+    @Override
+    public String insertUser(String useranme, String pass, String role) throws RemoteException {
+        return remoteOperations.insertUser(useranme, pass, role);
     }
 
     /*@Override

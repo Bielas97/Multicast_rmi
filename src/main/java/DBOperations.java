@@ -4,6 +4,7 @@ import domain.Artist;
 import domain.Song;
 import domain.User;
 
+import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 
 public class DBOperations {
@@ -16,6 +17,8 @@ public class DBOperations {
         PreparedStatement stmt;
         Statement stmt2 = null;
         ResultSet rs = null;
+        Statement stmt3;
+        ResultSet rs2;
         try {
             stmt2 = MulticastServer.conn.createStatement();
             rs = stmt2.executeQuery("SELECT COUNT(*)FROM SONGS WHERE TITLE = '" + title + "'");
@@ -24,7 +27,13 @@ public class DBOperations {
                 m.msg = "Song " + title + " already exists in the database.";
                 return m;
             }
-
+            stmt3 = MulticastServer.conn.createStatement();
+            rs2 =stmt3.executeQuery("select count(*) from album where name='"+albumname+"'");
+            rs2.next();
+            if (rs2.getInt(1) == 0) {
+                m.msg = "Such album doesn't exist.";
+                return m;
+            }
             stmt = MulticastServer.conn.prepareStatement("INSERT INTO SONGS (TITLE,ID_ALBUM) VALUES " +
                     "('" + title + "'," +
                     "(SELECT ID_ALBUM FROM ALBUM WHERE ALBUM.NAME='" + albumname + "'));");
@@ -76,13 +85,22 @@ public class DBOperations {
         Message m = new Message();
         PreparedStatement stmt;
         Statement stmt2 = null;
+        Statement stmt3;
         ResultSet rs = null;
+        ResultSet rs2;
         try {
             stmt2 = MulticastServer.conn.createStatement();
             rs = stmt2.executeQuery("SELECT COUNT(*)FROM ALBUM WHERE NAME = '" + name + "'");
             rs.next();
             if (rs.getInt(1) == 1) {
                 m.msg = "Album " + name + " already exists in the database.";
+                return m;
+            }
+            stmt3 = MulticastServer.conn.createStatement();
+            rs2 =stmt3.executeQuery("select count(*) from artists where name='"+artist+"'");
+            rs2.next();
+            if (rs2.getInt(1) == 0) {
+                m.msg = "Such artist doesn't exist.";
                 return m;
             }
             stmt = MulticastServer.conn.prepareStatement("INSERT INTO ALBUM (NAME,GENRE,DESCR,ID_ARTIST) VALUES " +
@@ -135,9 +153,19 @@ public class DBOperations {
     public synchronized Message delete(String ids, String table, String column) {
         Message m = new Message();
         PreparedStatement stmt;
+        Statement stmt2;
+        ResultSet rs;
         try {
+            stmt2 = MulticastServer.conn.createStatement();
+            rs = stmt2.executeQuery("SELECT COUNT(*)FROM "+table+" WHERE "+column+" = '" + ids + "'");
+            rs.next();
+            if (rs.getInt(1) == 0) {
+                m.msg = "This entity doesn't exist in database";
+                return m;
+            }
             stmt = MulticastServer.conn.prepareStatement("DELETE FROM " + table + " WHERE " + column + " = '" + ids + "';");
             stmt.executeUpdate();
+
         } catch (SQLException e) {
             m.msg = "Could not delete " + ids;
             return m;

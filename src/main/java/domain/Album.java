@@ -62,7 +62,7 @@ public class Album implements Serializable {
 
     @Override
     public String toString() {
-        return "domain.Album{" +
+        return "Album{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", genre='" + genre + '\'' +

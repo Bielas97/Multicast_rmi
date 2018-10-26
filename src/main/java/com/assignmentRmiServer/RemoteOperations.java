@@ -7,7 +7,9 @@ import domain.User;
 
 import java.util.List;
 
-
+/**
+ * This class creates a string message for the multicast server
+ */
 public class RemoteOperations {
     SendReceiveConnection mc;
 
@@ -153,5 +155,13 @@ public class RemoteOperations {
     public String updateArtistBio(String newbio, String name) {
         Message m = mc.sendReceive("update|bio|" + newbio + "|" + name);
         return m.msg;
+    }
+    public List<Song> getSharedSongs(String username){
+        Message m = mc.sendReceive("getall|shared|"+ username);
+        return m.songList;
+    }
+    public List<Song> getFavouriteSongs(String username)  {
+        Message m = mc.sendReceive("getall|fav|" + username);
+        return m.songList;
     }
 }

@@ -14,6 +14,9 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.Scanner;
 
+/**
+ * creates Rmi server
+ */
 public class RmiServer /*extends Thread*/{
     /*private static String MULTICAST_ADDRESS = "224.3.3.1";
     private static final int PORT = 4320;*/
@@ -33,8 +36,8 @@ public class RmiServer /*extends Thread*/{
             System.out.println("Server ready to use...");
 
             RemoteOperations rmo = new RemoteOperations(new SendReceiveConnection());
-            System.out.println(rmo.getAllAlbums().get(0).getDescr());
-            System.out.println(rmo.getAllUsers());
+            //System.out.println(rmo.getAllAlbums().get(0).getDescr());
+            System.out.println(rmo.insertSong("Big in Japans","Debil"));
 
 
             Scanner scanner = new Scanner(System.in);

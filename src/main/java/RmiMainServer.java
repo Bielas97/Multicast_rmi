@@ -1,3 +1,6 @@
+/**
+ * main class for java rmi server
+ */
 public class RmiMainServer {
     private static String MULTICAST_ADDRESS = "224.3.3.1";
     private static final int PORT = 4320;

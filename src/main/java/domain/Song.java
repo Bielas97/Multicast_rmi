@@ -41,7 +41,7 @@ public class Song implements Serializable {
 
     @Override
     public String toString() {
-        return "domain.Song{" +
+        return "Song{" +
                 "id=" + id +
                 ", id_album=" + id_album +
                 ", title='" + title + '\'' +

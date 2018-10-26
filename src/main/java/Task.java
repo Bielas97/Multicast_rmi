@@ -7,7 +7,9 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
-
+/**
+ * Class, which handles the client requests. parses the messages and redirects them to database operations.
+ */
 public class Task implements Runnable {
     public String message;
     public Message returnMessage;
@@ -75,6 +77,12 @@ public class Task implements Runnable {
                         break;
                     case "songs":
                         returnMessage = dbOperations.getAllSongs();
+                        break;
+                    case "shared":
+                        returnMessage = dbOperations.getAllSharedSongs(tokens[2]);
+                        break;
+                    case "fav":
+                        returnMessage = dbOperations.getAllFavSongs(tokens[2]);
                         break;
                 }
                 break;

@@ -3,12 +3,18 @@ import java.net.*;
 import java.text.Collator;
 import java.util.*;
 
+/**
+ * Arbiter class, which makes inner multicast connection between running database servers and
+ * automatically chooses one to respond to the RMI server.
+ *
+ */
 public class FailoverHandler implements Runnable {
     public static boolean respond = false;
     public static boolean maintenance = false;
 
     public FailoverHandler() {
     }
+
 
     @Override
     public void run() {
@@ -94,6 +100,11 @@ public class FailoverHandler implements Runnable {
         }
     }
 
+    /**
+     * Method, in which other servers listen to the sender.
+     * @param group multicast group
+     * @param socket multicast socket
+     */
     private void listen(InetAddress group, MulticastSocket socket) {
         byte[] buffer = new byte[256];
         try {

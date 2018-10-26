@@ -7,11 +7,20 @@ import domain.User;
 import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 
+/**
+ *Class for the operations with database
+ */
 public class DBOperations {
     public DBOperations() {
 
     }
 
+    /**
+     * Method, which inserts a song into the database.
+     * @param title Title of the song
+     * @param albumname Album, to which the song belongs (must exist already in database)
+     * @return Returns object Message, which contains a return message for the client.
+     */
     public synchronized Message insertSong(String title, String albumname) {
         Message m = new Message();
         PreparedStatement stmt;
@@ -51,6 +60,13 @@ public class DBOperations {
         return m;
     }
 
+    /**
+     * Method, which inserts a new user into the database.
+     * @param user new username
+     * @param pass password
+     * @param type type of the user (admin,publisher,user)
+     * @return Returns object Message, which contains a return message for the client.
+     */
     public synchronized Message insertUser(String user, String pass, String type) {
         Message m = new Message();
         PreparedStatement stmt;
@@ -81,6 +97,14 @@ public class DBOperations {
         return m;
     }
 
+    /**
+     * Method, which inserts a new album into the database.
+     * @param name album name
+     * @param genre album genre
+     * @param descr album description
+     * @param artist Name of the artist, which released the album (must already exist in database
+     * @return Returns object Message, which contains a return message for the client.
+     */
     public synchronized Message insertAlbum(String name, String genre, String descr, String artist) {
         Message m = new Message();
         PreparedStatement stmt;
@@ -120,6 +144,12 @@ public class DBOperations {
         return m;
     }
 
+    /**
+     * Method, which inserts a new artist into the database.
+     * @param name artist name
+     * @param bio short description
+     * @return Returns object Message, which contains a return message for the client.
+     */
     public synchronized Message insertArtist(String name, String bio) {
         Message m = new Message();
         PreparedStatement stmt;
@@ -150,6 +180,13 @@ public class DBOperations {
         return m;
     }
 
+    /**
+     * Method, which deletes records in specific table, column.
+     * @param ids name of deleted item
+     * @param table
+     * @param column
+     * @return Returns object Message, which contains a message for the client.
+     */
     public synchronized Message delete(String ids, String table, String column) {
         Message m = new Message();
         PreparedStatement stmt;
@@ -174,6 +211,12 @@ public class DBOperations {
         return m;
     }
 
+    /**
+     * Method, which authenticates the user.
+     * @param user
+     * @param pass
+     * @return Returns object Message, which contains a message for the client.
+     */
     public synchronized Message authenticateUser(String user, String pass) {
         Message m = new Message();
         Statement stmt;
@@ -202,6 +245,10 @@ public class DBOperations {
 
     }
 
+    /**
+     * Method, which returns all artists from the database
+     * @return Returns object Message, which contains a list of artists.
+     */
     public synchronized Message getAllArtists() {
         Message m = new Message();
         Statement stmt;
@@ -222,7 +269,10 @@ public class DBOperations {
         }
         return m;
     }
-
+    /**
+     * Method, which returns all users from the database
+     * @return Returns object Message, which contains a list of users.
+     */
     public synchronized Message getAllUsers() {
         Message m = new Message();
         Statement stmt;
@@ -246,8 +296,11 @@ public class DBOperations {
         }
         return m;
     }
-
-    public Message getAllAlbums() {
+    /**
+     * Method, which returns all albums from the database
+     * @return Returns object Message, which contains a list of albums.
+     */
+    public synchronized Message getAllAlbums() {
         Message m = new Message();
         Statement stmt;
         ResultSet rs = null;
@@ -271,8 +324,10 @@ public class DBOperations {
         }
         return m;
     }
-
-
+    /**
+     * Method, which returns all songs from the database
+     * @return Returns object Message, which contains a list of songs.
+     */
     public synchronized Message getAllSongs() {
         Message m = new Message();
         Statement stmt;
@@ -297,6 +352,15 @@ public class DBOperations {
         return m;
     }
 
+    /**
+     * Method, which updates records in database
+     * @param replacement new value
+     * @param ids value to identify updated record
+     * @param table table, where value is updated
+     * @param column column name for the query condition
+     * @param repColumn column name where the data is replaced
+     * @return Returns object Message, which contains a message for the client.
+     */
     public synchronized Message updateRecord(String replacement, String ids, String table, String column, String repColumn) {
         Message m = new Message();
         PreparedStatement stmt;
@@ -324,6 +388,11 @@ public class DBOperations {
         return m;
     }
 
+    /**
+     * Method, which searches songs created by artists with given phrase
+     * @param name name of artist
+     * @return Returns object Message, which contains list of songs by artists.
+     */
     public synchronized Message searchSongsByArtist(String name) {
         Message m = new Message();
         Statement stmt;
@@ -351,7 +420,11 @@ public class DBOperations {
         }
         return m;
     }
-
+    /**
+     * Method, which searches songs contained by albums with given phrase
+     * @param name name of album
+     * @return Returns object Message, which contains list of songs.
+     */
     public synchronized Message searchSongsByAlbum(String name) {
         Message m = new Message();
         Statement stmt;
@@ -374,7 +447,11 @@ public class DBOperations {
         }
         return m;
     }
-
+    /**
+     * Method, which searches songs with given genre
+     * @param name name of artist
+     * @return Returns object Message, which contains list of songs.
+     */
     public synchronized Message searchSongsByGenre(String name) {
         Message m = new Message();
         Statement stmt;
@@ -397,7 +474,11 @@ public class DBOperations {
         }
         return m;
     }
-
+    /**
+     * Method, which searches searches songs with given phrase
+     * @param name name of artist
+     * @return Returns object Message, which contains list of songs.
+     */
     public synchronized Message searchSongsByName(String name) {
         Message m = new Message();
         Statement stmt;
@@ -420,6 +501,11 @@ public class DBOperations {
         return m;
     }
 
+    /**
+     * Method, which checks if the file to upload exists in database
+     * @param filename
+     * @return Returns object Message, which contains a message for the client.
+     */
     public synchronized Message checkIfFileCorresponds(String filename) {
         Message m = new Message();
         filename = filename.substring(0, filename.length() - 4);
@@ -444,6 +530,12 @@ public class DBOperations {
         return m;
     }
 
+    /**
+     * Method, which lets user download song shared by another user
+     * @param user
+     * @param title
+     * @return Returns object Message, which contains a message for the client.
+     */
     public synchronized Message insertSharedUser(String user, String title) {
         Message m = new Message();
         PreparedStatement stmt;
@@ -464,6 +556,12 @@ public class DBOperations {
         }
     }
 
+    /**
+     * Method, which checks whether the user can download given file
+     * @param username
+     * @param title
+     * @return Returns object Message, which contains a message for the client.
+     */
     public synchronized Message checkIfUserCanDownload(String username, String title) {
         Message m = new Message();
         title = title.substring(0, title.length() - 4);
@@ -487,6 +585,12 @@ public class DBOperations {
         return m;
     }
 
+    /**
+     * Method, which inserts a favorite song for given user
+     * @param user
+     * @param song
+     * @return Returns object Message, which contains a message for the client.
+     */
     public synchronized Message insertFavSong(String user, String song) {
         Message m = new Message();
         PreparedStatement stmt;
@@ -519,6 +623,11 @@ public class DBOperations {
         return m;
     }
 
+    /**
+     * Method returning a list of users with given phrase
+     * @param name
+     * @return Returns object Message, which contains a list of users for the client.
+     */
     public synchronized Message searchUsersByName(String name) {
 
         Message m = new Message();
@@ -544,8 +653,12 @@ public class DBOperations {
 
     }
 
-
-    public Message getAllSharedSongs(String user) {
+    /**
+     * Method, which returns all songs shared by given user
+     * @param user
+     * @return
+     */
+    public synchronized Message getAllSharedSongs(String user) {
         Message m = new Message();
         Statement stmt;
         ResultSet rs = null;
@@ -574,7 +687,12 @@ public class DBOperations {
         return m;
     }
 
-    public Message getAllFavSongs(String name) {
+    /**
+     * Method, which returns all favorite songs of a given user.
+     * @param name
+     * @return
+     */
+    public synchronized Message getAllFavSongs(String name) {
         Message m = new Message();
         Statement stmt;
         ResultSet rs = null;

@@ -3,6 +3,9 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * Class, which handles incoming TCP connections from multiple clients.
+ */
 public class TCPConnectionHandler extends Thread {
 
     static final int PORT = 5000;

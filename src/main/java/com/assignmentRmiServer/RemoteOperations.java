@@ -7,7 +7,9 @@ import domain.User;
 
 import java.util.List;
 
-
+/**
+ * This class creates a string message for the multicast server
+ */
 public class RemoteOperations {
     SendReceiveConnection mc;
 

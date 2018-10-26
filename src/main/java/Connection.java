@@ -3,6 +3,9 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 
+/**
+ * Class, which handles the TCP request and sends/receives the files.
+ */
 public class Connection extends Thread {
     protected Socket socket;
 
@@ -39,6 +42,11 @@ public class Connection extends Thread {
         System.out.println("File sent succesfully!");
     }
 
+    /**
+     * Metod, which receives a MP3 file.
+     * @param filename
+     * @throws IOException
+     */
     private void getFile(String filename) throws IOException {
         byte[] contents = new byte[10000];
         System.out.println("dostaję");
@@ -59,20 +67,21 @@ public class Connection extends Thread {
         System.out.println("File saved successfully!");
 
     }
-
+    /**
+     * Metod, which sends a MP3 file to the client.
+     * @param filename
+     * @throws IOException
+     */
     private void sendFile(String filename) throws IOException {
         System.out.println("wysylam");
         File file = new File("ServerMP3s/" + filename);
         FileInputStream fis = new FileInputStream(file);
         BufferedInputStream bis = new BufferedInputStream(fis);
 
-        //Get socket's output stream
         OutputStream os = null;
 
         os = socket.getOutputStream();
 
-
-        //Read File Contents into contents array
         byte[] contents;
         long fileLength = file.length();
         long current = 0;
@@ -89,16 +98,19 @@ public class Connection extends Thread {
             contents = new byte[size];
             bis.read(contents, 0, size);
             os.write(contents);
-            System.out.print("Sending file ... " + (current * 100) / fileLength + "% complete!");
         }
 
         os.flush();
     }
 
+    /**
+     * Method, which returns message from the client
+     * @return String, with information regarding file name and decision about upload or download.
+     * @throws IOException
+     */
     private String getClientMessage() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
         String s = br.readLine();
-        System.out.println(s);
         return s;
     }
 }

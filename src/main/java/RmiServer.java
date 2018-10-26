@@ -36,8 +36,8 @@ public class RmiServer /*extends Thread*/{
             System.out.println("Server ready to use...");
 
             RemoteOperations rmo = new RemoteOperations(new SendReceiveConnection());
-            System.out.println(rmo.getAllAlbums().get(0).getDescr());
-            System.out.println(rmo.getAllUsers());
+            //System.out.println(rmo.getAllAlbums().get(0).getDescr());
+            System.out.println(rmo.insertSong("Big in Japans","Debil"));
 
 
             Scanner scanner = new Scanner(System.in);

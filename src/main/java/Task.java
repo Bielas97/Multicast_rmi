@@ -7,7 +7,9 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
-
+/**
+ * Class, which handles the client requests. parses the messages and redirects them to database operations.
+ */
 public class Task implements Runnable {
     public String message;
     public Message returnMessage;

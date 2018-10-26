@@ -2,6 +2,9 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 
+/**
+ * Client side TCP connection handler.
+ */
 public class TCPConnectionHandlerClient {
     Socket socket;
     final int PORT = 5000;
@@ -14,6 +17,11 @@ public class TCPConnectionHandlerClient {
         }
     }
 
+    /**
+     * Sends request to the multicast server and downloads the file.
+     *
+     * @param filename
+     */
     public void getFile(String filename) {
         try {
             makeRequestToDownload(filename);
@@ -36,16 +44,32 @@ public class TCPConnectionHandlerClient {
 
     }
 
+    /**
+     * Makes request to send a file to the multicast server.
+     *
+     * @param filename
+     * @throws IOException
+     */
     private void makeRequestToSend(String filename) throws IOException {
         PrintWriter pw = new PrintWriter(this.socket.getOutputStream(), true);
         pw.println("send|" + filename);
     }
 
+    /**
+     * Makes request to download a file from the multicast server.
+     * @param filename
+     * @throws IOException
+     */
     private void makeRequestToDownload(String filename) throws IOException {
         PrintWriter pw = new PrintWriter(this.socket.getOutputStream(), true);
         pw.println("get|" + filename);
     }
 
+    /**
+     * Uploads a file to multicast server.
+     * @param filename
+     * @throws IOException
+     */
     public void sendFile(String filename) throws IOException {
         makeRequestToSend(filename);
         File file = new File(filename);
@@ -70,7 +94,6 @@ public class TCPConnectionHandlerClient {
             contents = new byte[size];
             bis.read(contents, 0, size);
             os.write(contents);
-            System.out.print("Sending file ... " + (current * 100) / fileLength + "% complete!");
         }
         os.flush();
         socket.close();
